@@ -6,7 +6,6 @@ export interface IBodyCellProps {
 }
 
 const BodyCell = (props: IBodyCellProps) => (
-
     <td className="BodyCell">
         {props.content}
     </td>

@@ -3,6 +3,14 @@
     border-collapse: collapse;
 }
 
-.Table, .Cell__head, .Cell__body  {
+.Table, .HeadCell, .BodyCell  {
     border: 1px solid black;
+}
+
+.HeadCell {
+    background-color: deepskyblue;
+}
+
+.BodyCell {
+
 }
