@@ -50,13 +50,13 @@ export const COL = {
 export const COL_IDTONAME_MAP = {
     cmplnt_num: "Complaint Num",
     cmplnt_fr_dt: "Date-Time",        // datestring
-    complnt_fr_tm: "Item3",
-    cmpnt_to_dt: "Item4",        // datestring
-    cmplnt_to_tm: "Item5",
-    addr_pct_cd: "Item6",
-    rpt_dt: "Item7",            // datestring
-    ky_cd: "Item8",
-    ofns_desc: "Item9",
+    complnt_fr_tm: "complnt_fr_tm",
+    cmpnt_to_dt: "cmpnt_to_dt",        // datestring
+    cmplnt_to_tm: "cmplnt_to_tm",
+    addr_pct_cd: "addr_pct_cd",
+    rpt_dt: "rpt_dt",            // datestring
+    ky_cd: "ky_cd",
+    ofns_desc: "ofns_desc",
     pd_cd: "PD CD",
     pd_desc: "PD Description",
     crm_atpt_cptd_cd: "Crime Status",
@@ -66,9 +66,9 @@ export const COL_IDTONAME_MAP = {
     prem_typ_desc: "Premises",
     juris_desc: "Juris. Desc",
     jurisdiction_code: "Juris. Code",
-    parks_nm: "Item19",
-    hadevelopt: "Item20",
-    housing_psa: "Item21",
+    parks_nm: "parks_nm",
+    hadevelopt: "hadevelopt",
+    housing_psa: "housing_psa",
     x_coord_cd: "X Coord (CD)",
     y_coord_cd: "Y Coord (CD)",
     susp_age_group: "Susp Age Group",
