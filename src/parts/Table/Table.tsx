@@ -37,7 +37,7 @@ export default class Table extends React.Component<ITableProps, ITableState> {
     private renderTHead(colIds: string[]) {
         return (
             <thead className="Table__head">
-                <tr>
+                <tr className="Table__head__row">
                 {
                     colIds
                         .map((id, colIdx) => {
@@ -67,7 +67,7 @@ export default class Table extends React.Component<ITableProps, ITableState> {
 
     private renderRow(dataRow: IDataRow, rowIdx: number) {
         return     (
-            <tr key={`row-${rowIdx}`}>
+            <tr key={`row-${rowIdx}`} className="Table__body__row">
                 {
                     this.state.colIds
                             .map((colId, colIdx) => {
