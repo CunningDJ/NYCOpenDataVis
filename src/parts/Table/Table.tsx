@@ -1,6 +1,7 @@
 import * as React from 'react';
 
-import Cell from './Cell';
+import HeadCell from './HeadCell';
+import BodyCell from './BodyCell';
 import { IDataRow } from '../Api/Api.d';
 
 import './Table.css';
@@ -44,10 +45,9 @@ export default class Table extends React.Component<ITableProps, ITableState> {
                     colIds
                         .map((id, colIdx) => {
                             return (
-                                <Cell
+                                <HeadCell
                                     key={`header-${colIdx}`}
                                     content={this.state.colIdToNameMap[id]}
-                                    header={true}
                                 />
                             )
                         })
@@ -74,7 +74,7 @@ export default class Table extends React.Component<ITableProps, ITableState> {
                     this.state.colIds
                             .map((colId, colIdx) => {
                                 return (
-                                    <Cell
+                                    <BodyCell
                                         key={`${rowIdx}-${colIdx}`}
                                         content={dataRow[colId]}
                                     />
