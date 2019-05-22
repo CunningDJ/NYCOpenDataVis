@@ -27,7 +27,7 @@ export default class NYCCTable extends React.Component<INYCCTableProps, INYCCTab
             colIds: DEFAULT_COLIDS,
             colIdToNameMap: ApiNYCC.COL_IDTONAME_MAP,
             bodyData: null,
-            loadError: ""
+            loadError: "Loading..."
         }
     }
 
