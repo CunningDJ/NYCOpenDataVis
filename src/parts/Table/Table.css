@@ -1,0 +1,8 @@
+
+.Table {
+    border-collapse: collapse;
+}
+
+.Table, .Cell__head, .Cell__body  {
+    border: 1px solid black;
+}

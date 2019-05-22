@@ -3,6 +3,8 @@ import * as React from 'react';
 import Cell from './Cell';
 import { IDataRow } from '../Api/Api.d';
 
+import './Table.css';
+
 export interface ITableProps {
     colIds: string[],         // table header strings
     colIdToNameMap: {    // table column ids -> user-friendly names

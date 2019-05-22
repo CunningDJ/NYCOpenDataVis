@@ -8,11 +8,11 @@ export interface ICellProps {
 
 const Cell = (props: ICellProps) => {
     return props.header ? 
-        (<th className="Cell">
+        (<th className="Cell__head">
             {props.content}
         </th>) 
         : 
-        (<td className="Cell">
+        (<td className="Cell__body">
             {props.content}
         </td>);
 }
