@@ -3,6 +3,25 @@
     border-collapse: collapse;
 }
 
-.Table, .Cell__head, .Cell__body  {
+.Table, .HeadCell, .BodyCell  {
     border: 1px solid black;
+}
+
+.HeadCell {
+    background-color: deepskyblue;
+    cursor: pointer;
+}
+
+.HeadCell__sort-caret {
+    font-size: 16px;
+    color: black;
+    margin: auto 2px;
+}
+
+.HeadCell__name {
+    margin: auto 5px;
+}
+
+.BodyCell {
+    cursor: text;
 }
