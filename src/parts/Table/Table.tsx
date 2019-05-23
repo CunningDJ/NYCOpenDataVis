@@ -54,11 +54,16 @@ export default class Table extends React.Component<ITableProps, ITableState> {
                 {
                     colIds
                         .map((id, colIdx) => {
+                            let sortCaret = null;
+                            if (id === this.state.sortColId) {
+                                sortCaret = this.state.sortAscending;
+                            }
                             return (
                                 <HeadCell
                                     key={`header-${colIdx}`}
                                     name={this.state.colIdToNameMap[id]}
                                     onClick={this.clickHeadCell}
+                                    sortCaret={sortCaret}
                                 />
                             )
                         })
