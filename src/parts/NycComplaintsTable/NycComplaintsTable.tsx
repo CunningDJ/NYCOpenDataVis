@@ -51,7 +51,7 @@ export default class NYCCTable extends React.Component<INYCCTableProps, INYCCTab
         return bodyData ? 
         (
             <Table 
-                bodyData={bodyData} 
+                data={bodyData} 
                 colIds={colIds} 
                 colIdToNameMap={colIdToNameMap}
             />

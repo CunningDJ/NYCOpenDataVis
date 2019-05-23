@@ -2,12 +2,13 @@ import * as React from 'react';
 
 
 export interface IHeadCellProps {
-    content: any
+    name: any,
+    onClick(e: React.MouseEvent<HTMLTableHeaderCellElement>): void;
 }
 
 const HeadCell = (props: IHeadCellProps) =>(
-    <th className="HeadCell">
-            {props.content}
+    <th className="HeadCell" onClick={props.onClick}>
+            {props.name}
     </th>
 );
 
