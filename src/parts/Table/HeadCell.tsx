@@ -22,7 +22,7 @@ interface ISortCaretProps {
 }
 
 const SortCaret = (props: ISortCaretProps) => {
-    let iconClass = ""
+    let iconClass = "";
     if (props.caret !== null) {
         iconClass = props.caret ? "fas fa-angle-up" : "fas fa-angle-down";
     }
