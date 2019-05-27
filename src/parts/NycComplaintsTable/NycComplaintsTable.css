@@ -1,0 +1,7 @@
+.nyc-complaints-table__error-box {
+    background-color: orange; 
+    border-radius: 5px;
+    max-width: 400px;
+    margin: 5px;
+    padding: 10px;
+}
