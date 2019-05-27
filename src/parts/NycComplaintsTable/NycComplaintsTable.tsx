@@ -1,9 +1,13 @@
 import * as React from 'react';
+import { Helmet } from 'react-helmet';
 
 import Table from '../Table/Table';
-
 import * as ApiNYCC from '../Api/ApiNYCC';
 import { INycComplaintDataRow } from '../Api/Api.d'
+
+import * as mu from '../../metaUtils';
+
+import './NycComplaintsTable.css'
 
 export interface INYCCTableProps {}
 
@@ -40,25 +44,31 @@ export default class NYCCTable extends React.Component<INYCCTableProps, INYCCTab
             })
             .catch((err) => {
                 this.setState({
-                    loadError: err
+                    loadError: "Sorry, there's a problem: " + err.message.trim()
                 });
             })
     }
 
     public render() {
         const { bodyData, colIds, colIdToNameMap } = this.state;
-        //const castBodyData = (<IDataRow[]>) bodyData;
         return bodyData ? 
         (
-            <Table 
-                data={bodyData} 
-                colIds={colIds} 
-                colIdToNameMap={colIdToNameMap}
-            />
+            <div className="nyc-complaints-table">
+                <Table
+                    data={bodyData}
+                    colIds={colIds}
+                    colIdToNameMap={colIdToNameMap}
+                />
+            </div>
         ) :
         (
-            <div>
-                <h3>{this.state.loadError}</h3>
+            <div className="nyc-complaints-table__error-box">
+                <Helmet>
+                    {mu.metaTitleTags("Load Error")}
+                </Helmet>
+                <div>
+                    <h3>{this.state.loadError}</h3>
+                </div>
             </div>
         )
     }
