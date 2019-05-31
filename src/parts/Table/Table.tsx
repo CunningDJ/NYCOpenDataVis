@@ -15,7 +15,7 @@ export interface ITableProps {
         [ id: string]: string
     },
     searchBar: boolean,
-    pageFetch: (limit: number, offset: number) 
+    pageFetch: (limit: number, offset: number)
                     => Promise<IDataRow[]>,
     pageSize: number
 }
@@ -154,7 +154,7 @@ export default class Table extends React.Component<ITableProps, ITableState> {
         }
         return searchResults.concat()
                     .sort((aIdx, bIdx) => {
-                        const aRow = data[aIdx], aCell = aRow[colId]; 
+                        const aRow = data[aIdx], aCell = aRow[colId];
                         const bRow = data[bIdx], bCell = bRow[colId];
                         if (typeof aRow[colId] === "string") {
                             if (sortAscending) {
@@ -164,7 +164,7 @@ export default class Table extends React.Component<ITableProps, ITableState> {
                                 return (bCell as string)
                                         .localeCompare(aCell as string)
                             }
-                            
+
                         } else {
                             if (sortAscending) {
                                 return (aCell as any) - (bCell as any);
@@ -187,9 +187,9 @@ export default class Table extends React.Component<ITableProps, ITableState> {
         return !(data.length == 0 && loadError != "") ? (
             <div>
                 <div className="Table__search-bar">
-                    <input 
-                        type="text" 
-                        value={this.state.searchQuery} 
+                    <input
+                        type="text"
+                        value={this.state.searchQuery}
                         onChange={this.changeSearchQuery}
                     />
                 </div>
@@ -198,7 +198,7 @@ export default class Table extends React.Component<ITableProps, ITableState> {
                     {this.renderTBody(this.state.searchResults.map(idx => this.state.data[idx]))}
                 </table>
             </div>
-        ) 
+        )
             :
         (
             <div className="nyc-complaints-table__error-box">
