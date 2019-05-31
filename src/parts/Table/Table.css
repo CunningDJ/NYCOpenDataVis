@@ -7,6 +7,16 @@
     border: 1px solid black;
 }
 
+.Table__search-bar {
+    display: inline-table;
+    background-color: deepskyblue;
+    padding: 5px;
+    border: solid black;
+    border-width: 1px 1px 0px 1px;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+}
+
 .HeadCell {
     background-color: deepskyblue;
     cursor: pointer;
