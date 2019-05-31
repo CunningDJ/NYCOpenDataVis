@@ -1,8 +1,11 @@
 import * as React from 'react';
+import { Helmet } from 'react-helmet';
 
 import HeadCell from './HeadCell';
 import BodyCell from './BodyCell';
 import { IDataRow } from '../Api/Api.d';
+
+import * as mu from '../../metaUtils';
 
 import './Table.css';
 
@@ -11,7 +14,10 @@ export interface ITableProps {
     colIdToNameMap: {    // table column ids -> user-friendly names
         [ id: string]: string
     },
-    data: IDataRow[]
+    searchBar: boolean,
+    pageFetch: (limit: number, offset: number) 
+                    => Promise<IDataRow[]>,
+    pageSize: number
 }
 
 export interface ITableState {
@@ -22,29 +28,49 @@ export interface ITableState {
     data: IDataRow[],
     sortColId: string | null,
     sortAscending: boolean,    // false=descending
-    displayData: number[]
+    searchResults: number[],
+    searchBar: boolean,
+    searchQuery: string,
+    loadError: string
 }
 
 export default class Table extends React.Component<ITableProps, ITableState> {
     public constructor(props: ITableProps) {
         super(props);
 
-        // default: all indices
-        const displayData = props.data.map((data, idx) => idx)
-
         this.state = {
             colIds: props.colIds,
             colIdToNameMap: props.colIdToNameMap,
-            data: props.data,
+            data: [],
             sortColId: null,
             sortAscending: true,
-            displayData
+            searchResults: [],
+            searchBar: props.searchBar,
+            searchQuery: "",
+            loadError: "Loading..."
         }
 
         this.renderTHead = this.renderTHead.bind(this);
         this.renderTBody = this.renderTBody.bind(this);
         this.renderRow = this.renderRow.bind(this);
         this.clickHeadCell = this.clickHeadCell.bind(this);
+        this.sortSearchResults = this.sortSearchResults.bind(this);
+        this.changeSearchQuery = this.changeSearchQuery.bind(this);
+    }
+
+    public componentDidMount() {
+        this.props.pageFetch(this.props.pageSize, 0)
+                .then((data) => {
+                    this.setState({
+                        data,
+                        searchResults: data.map((data, idx) => idx)
+                    })
+                })
+                .catch(err => {
+                    this.setState({
+                        loadError: "Sorry, there's a problem: " + err.message.trim()
+                    })
+                })
     }
 
     private renderTHead(colIds: string[]) {
@@ -84,7 +110,7 @@ export default class Table extends React.Component<ITableProps, ITableState> {
     }
 
     private renderRow(dataRow: IDataRow, rowIdx: number) {
-        return     (
+        return (
             <tr key={`row-${rowIdx}`} className="Table__body__row">
                 {
                     this.state.colIds
@@ -95,39 +121,38 @@ export default class Table extends React.Component<ITableProps, ITableState> {
                                         content={dataRow[colId]}
                                     />
                                 )
-                            }) 
+                            })
                 }
             </tr>
-            )
+        )
     }
 
     private clickHeadCell(e: React.MouseEvent<HTMLTableHeaderCellElement>) {
         const colIdToSort = this.state.colIds[e.currentTarget.cellIndex];
         const justClicked = (colIdToSort === this.state.sortColId);
-        console.log('a')
         // toggles if same header was clicked last
         if (justClicked) {
             this.setState({
                 sortAscending: !this.state.sortAscending,
                 // just reverse what was already done
-                displayData: this.state.displayData.concat().reverse()
+                searchResults: this.state.searchResults.concat().reverse()
             })
         } else {
-            const newDisplayData = this.sortDisplayData(colIdToSort, true);
+            const newSearchResults = this.sortSearchResults(colIdToSort, true);
             this.setState({
-                displayData: newDisplayData,
+                searchResults: newSearchResults,
                 sortColId: colIdToSort,
                 sortAscending: true
             })
         }
     }
 
-    private sortDisplayData(colId: string, sortAscending: boolean): number[] {
-        const { data, displayData } = this.state;
-        if (displayData.length === 0) {
+    private sortSearchResults(colId: string, sortAscending: boolean): number[] {
+        const { data, searchResults } = this.state;
+        if (searchResults.length === 0) {
             return []
         }
-        return displayData.concat()
+        return searchResults.concat()
                     .sort((aIdx, bIdx) => {
                         const aRow = data[aIdx], aCell = aRow[colId]; 
                         const bRow = data[bIdx], bCell = bRow[colId];
@@ -150,13 +175,40 @@ export default class Table extends React.Component<ITableProps, ITableState> {
                     })
     }
 
-    public render() {
+    private changeSearchQuery(e: React.FormEvent<HTMLInputElement>) {
+        const newQuery = e.currentTarget.value;
+        this.setState({
+            searchQuery: newQuery
+        })
+    }
 
-        return (
-            <table className="Table">
-                {this.renderTHead(this.state.colIds)}
-                {this.renderTBody(this.state.displayData.map(idx => this.state.data[idx]))}
-            </table>
+    public render() {
+        const { data, loadError } = this.state;
+        return !(data.length == 0 && loadError != "") ? (
+            <div>
+                <div className="Table__search-bar">
+                    <input 
+                        type="text" 
+                        value={this.state.searchQuery} 
+                        onChange={this.changeSearchQuery}
+                    />
+                </div>
+                <table className="Table">
+                    {this.renderTHead(this.state.colIds)}
+                    {this.renderTBody(this.state.searchResults.map(idx => this.state.data[idx]))}
+                </table>
+            </div>
+        ) 
+            :
+        (
+            <div className="nyc-complaints-table__error-box">
+                <Helmet>
+                    {mu.metaTitleTags(this.state.loadError)}
+                </Helmet>
+                <div>
+                    <h3>{this.state.loadError}</h3>
+                </div>
+            </div>
         )
     }
 }

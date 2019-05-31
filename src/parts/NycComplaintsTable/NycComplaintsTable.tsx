@@ -1,11 +1,9 @@
 import * as React from 'react';
-import { Helmet } from 'react-helmet';
 
 import Table from '../Table/Table';
 import * as ApiNYCC from '../Api/ApiNYCC';
+import { limitOffsetCfg } from '../Api/ApiOpenData';
 import { INycComplaintDataRow } from '../Api/Api.d'
-
-import * as mu from '../../metaUtils';
 
 import './NycComplaintsTable.css'
 
@@ -15,9 +13,7 @@ export interface INYCCTableState {
     colIds: string[],         // table header names
     colIdToNameMap: {    // table column ids -> user-friendly names
         [ id: string]: string
-    },
-    bodyData: INycComplaintDataRow[] | null,
-    loadError: string
+    }
 }
 
 const DEFAULT_COLIDS = Object.values(ApiNYCC.COL);
@@ -29,47 +25,32 @@ export default class NYCCTable extends React.Component<INYCCTableProps, INYCCTab
 
         this.state = {
             colIds: DEFAULT_COLIDS,
-            colIdToNameMap: ApiNYCC.COL_IDTONAME_MAP,
-            bodyData: null,
-            loadError: "Loading..."
+            colIdToNameMap: ApiNYCC.COL_IDTONAME_MAP
         }
+
+        this.pageFetch = this.pageFetch.bind(this);
     }
 
-    public componentDidMount() {
-        ApiNYCC.fetchData()
-            .then(({ data }) => {
-                this.setState({
-                    bodyData: Object.values(data)
-                })
-            })
-            .catch((err) => {
-                this.setState({
-                    loadError: "Sorry, there's a problem: " + err.message.trim()
-                });
-            })
+    public pageFetch(limit: number, offset: number) {
+        return new Promise((resolve, reject) => {
+            ApiNYCC.fetchData(limitOffsetCfg(limit, offset))
+                .then(({ data }) => resolve(Object.values(data)))
+                .catch(err => reject(err))
+        }) as Promise<INycComplaintDataRow[]>
     }
 
     public render() {
-        const { bodyData, colIds, colIdToNameMap } = this.state;
-        return bodyData ? 
-        (
+        const { colIds, colIdToNameMap } = this.state;
+        return (
             <div className="nyc-complaints-table">
                 <Table
-                    data={bodyData}
                     colIds={colIds}
                     colIdToNameMap={colIdToNameMap}
+                    searchBar={true}
+                    pageFetch={this.pageFetch}
+                    pageSize={50}
                 />
             </div>
-        ) :
-        (
-            <div className="nyc-complaints-table__error-box">
-                <Helmet>
-                    {mu.metaTitleTags("Load Error")}
-                </Helmet>
-                <div>
-                    <h3>{this.state.loadError}</h3>
-                </div>
-            </div>
-        )
+        );
     }
 }
