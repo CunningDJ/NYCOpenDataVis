@@ -89,6 +89,6 @@ export const COL_IDTONAME_MAP = {
     vic_sex: "Vic Sex"
 }
 
-export function fetchData(): Promise<INycComplaintResponse> {
-    return axios.get(BASE_URL);
+export function fetchData(queryConfig={}): Promise<INycComplaintResponse> {
+    return axios.get(BASE_URL, { params: queryConfig });
 }
